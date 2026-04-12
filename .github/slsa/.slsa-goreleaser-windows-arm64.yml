@@ -1,0 +1,17 @@
+version: 1
+
+goos: windows
+goarch: arm64
+cgo: "0"
+
+flags:
+  - -trimpath
+
+ldflags:
+  - "-s -w"
+  - "-X main.version={{ .Env.VERSION }}"
+  - "-X main.commit={{ .Env.COMMIT }}"
+  - "-X main.commitDate={{ .Env.COMMIT_DATE }}"
+
+
+binary: bdpatch-windows-arm64.exe

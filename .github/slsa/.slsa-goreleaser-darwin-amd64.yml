@@ -1,0 +1,17 @@
+version: 1
+
+goos: darwin
+goarch: amd64
+cgo: "0"
+
+flags:
+  - -trimpath
+
+ldflags:
+  - "-s -w"
+  - "-X main.version={{ .Env.VERSION }}"
+  - "-X main.commit={{ .Env.COMMIT }}"
+  - "-X main.commitDate={{ .Env.COMMIT_DATE }}"
+
+
+binary: bdpatch-darwin-amd64
