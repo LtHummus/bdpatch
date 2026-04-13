@@ -122,7 +122,8 @@ func patchIndex(indexFile string, clear3DByte bool) error {
 			if _, err = f.WriteAt([]byte{0x00}, ThreeDByteOffset); err != nil {
 				return fmt.Errorf("could not clear 3D flag: %w", err)
 			}
-			if err = f.Sync(); err != nil {
+			err = f.Sync()
+			if err != nil {
 				return err
 			}
 		}
