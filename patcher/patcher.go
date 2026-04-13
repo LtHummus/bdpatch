@@ -115,8 +115,17 @@ func patchIndex(indexFile string, clear3DByte bool) error {
 	}
 
 	if extDataAddr != [4]byte{} {
-		// file is already patched, so do nothing
+		// file is already patched, but still honor --force-2d if requested
 		log.Printf("looks like we've been here already")
+		if clear3DByte {
+			log.Printf("clearing 3D byte")
+			if _, err = f.WriteAt([]byte{0x00}, ThreeDByteOffset); err != nil {
+				return fmt.Errorf("could not clear 3D flag: %w", err)
+			}
+			if err = f.Sync(); err != nil {
+				return err
+			}
+		}
 		return nil
 	}
 
