@@ -1,14 +1,14 @@
 # bdpatch
 
-A command-line tool that patches ripped Blu-ray discs for playback on Oppo Blu-ray players.
+A command-line tool that patches Blu-ray backups for playback on Oppo Blu-ray players.
 
 ## Why
 
-Oppo players can be picky about the metadata in Blu-ray rips. `bdpatch` fixes the index file so the player recognizes and plays the disc correctly. There was an application called `bdmv_modify` written by an unknown (to me, at least) author that does this patching. Unforutnately, there was no source code and the application is Windows only, so I figured out what it does and re-produced that here in this cross-platform Go application. Additionally, my version restructures the rip folder in to a `AVCHD` directory (that Oppo players require). It will not do this restructuring if it is already in `AVCHD` or if the `--no-restructure` flag is given.   
+Oppo players can be picky about the metadata in Blu-ray backups. `bdpatch` fixes the index file so the player recognizes and plays the disc correctly. There was an application called `bdmv_modify` written by an unknown (to me, at least) author that does this patching. Unforutnately, there was no source code and the application is Windows only, so I figured out what it does and re-produced that here in this cross-platform Go application. Additionally, my version restructures the backup folder in to a `AVCHD` directory (that Oppo players require). It will not do this restructuring if it is already in `AVCHD` or if the `--no-restructure` flag is given.   
 
 ## Usage
 
-Point bdpatch at the root folder of your Blu-ray rip (the one containing the `BDMV/` directory):
+Point bdpatch at the root folder of your Blu-ray backup (the one containing the `BDMV/` directory):
 
 ```sh
 bdpatch /path/to/MyMovie
