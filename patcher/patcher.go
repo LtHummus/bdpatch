@@ -108,6 +108,20 @@ func patchIndex(indexFile string, clear3DByte bool) error {
 	}
 	defer f.Close()
 
+	clear3DFlagAndSync := func() error {
+		log.Printf("clearing 3D byte")
+		if _, err = f.WriteAt([]byte{0x00}, ThreeDByteOffset); err != nil {
+			return fmt.Errorf("could not clear 3D flag: %w", err)
+		}
+
+		err = f.Sync()
+		if err != nil {
+			return err
+		}
+
+		return nil
+	}
+
 	// read extension data pointer (0x0C)
 	var extDataAddr [4]byte
 	if _, err = f.ReadAt(extDataAddr[:], ExtDataOffset); err != nil {
@@ -118,15 +132,9 @@ func patchIndex(indexFile string, clear3DByte bool) error {
 		// file is already patched, but still honor --force-2d if requested
 		log.Printf("looks like we've been here already")
 		if clear3DByte {
-			log.Printf("clearing 3D byte")
-			if _, err = f.WriteAt([]byte{0x00}, ThreeDByteOffset); err != nil {
-				return fmt.Errorf("could not clear 3D flag: %w", err)
-			}
-			err = f.Sync()
-			if err != nil {
-				return err
-			}
+			return clear3DFlagAndSync()
 		}
+
 		return nil
 	}
 
@@ -149,10 +157,7 @@ func patchIndex(indexFile string, clear3DByte bool) error {
 	}
 
 	if clear3DByte {
-		log.Printf("clearing 3D byte")
-		if _, err = f.WriteAt([]byte{0x00}, ThreeDByteOffset); err != nil {
-			return fmt.Errorf("could not clear 3D flag: %w", err)
-		}
+		return clear3DFlagAndSync()
 	}
 
 	err = f.Sync()
